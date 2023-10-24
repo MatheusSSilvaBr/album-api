@@ -16,7 +16,6 @@ app.get("/oauth2callback", async (req, res) => {
 
 app.get("/get-auth", async (req, res) => {
   const url = authorizeUrl;
-  // colocar try catch
   open(url);
   res.send("Requisição enviada");
 });
