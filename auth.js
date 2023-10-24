@@ -21,4 +21,13 @@ const authorizeUrl = oauth2Client.generateAuthUrl({
   scope: "https://www.googleapis.com/auth/photoslibrary",
 });
 
-export { authorizeUrl, oauth2Client };
+async function generateToken(code, client) {
+  const { tokens } = await oauth2Client.getToken(code);
+  oauth2Client.setCredentials(tokens);
+  client = oauth2Client;
+  if (tokens) {
+    return oauth2Client;
+  }
+}
+
+export { authorizeUrl, oauth2Client, generateToken };
