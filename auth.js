@@ -8,7 +8,7 @@ const client_credential = JSON.parse(
 // Carregue as credenciais do arquivo JSON
 const credentials = client_credential["web"];
 
-// Crie um objeto JWT com as credenciais
+// Crie um objeto JWT com as credengciais
 const oauth2Client = new google.Auth.OAuth2Client(
   credentials.client_id,
   credentials.client_secret,
