@@ -9,7 +9,7 @@ const client_credential = JSON.parse(
 const credentials = client_credential["web"];
 
 // Crie um objeto JWT com as credenciais
-const oauth2Client = new google.auth.OAuth2Client(
+const oauth2Client = new google.Auth.OAuth2Client(
   credentials.client_id,
   credentials.client_secret,
   credentials.redirect_uris
@@ -21,23 +21,4 @@ const authorizeUrl = oauth2Client.generateAuthUrl({
   scope: "https://www.googleapis.com/auth/photoslibrary",
 });
 
-// Após o usuário autorizar sua aplicação, você pode trocar o código de autorização pelo token de acesso
-function getCode() {
-  const code = "CÓDIGO_DE_AUTORIZAÇÃO";
-  return this.code;
-}
-
-function getToken() {
-  oauth2Client.getToken(code, (err, token) => {
-    if (err) {
-      console.error("Erro ao obter o token de acesso:", err);
-      return;
-    }
-
-    oauth2Client.setCredentials(token);
-
-    // Agora você pode usar oauth2Client para fazer chamadas à API do Google Fotos.
-  });
-}
-
-export { authorizeUrl };
+export { authorizeUrl, oauth2Client };
