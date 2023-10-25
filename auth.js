@@ -1,9 +1,9 @@
 import { readFile } from "fs/promises";
-import { OAuth2Client } from "google-auth-library";
 import google from "googleapis";
 const client_credential = JSON.parse(
   await readFile("./client_secret.json", "utf-8")
 );
+const fotos = google;
 
 // Carregue as credenciais do arquivo JSON
 const credentials = client_credential["web"];
@@ -30,4 +30,45 @@ async function generateToken(code, client) {
   }
 }
 
-export { authorizeUrl, oauth2Client, generateToken };
+async function getFotos(client){
+  const searchResponse =
+          await fetch('https://photoslibrary.googleapis.com/v1/mediaItems:search', {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + client.credentials.access_token,
+            },
+            body: JSON.stringify({
+              "filters": {
+                      "dateFilter": {
+                        "dates": [
+                          {
+                            "year": 2023,
+                            "month": 10,
+                            "day": 23
+                          }
+                          ]
+                        }
+                      }
+          })
+          });
+
+    const result = await checkStatus(searchResponse);
+    return result
+    
+}
+
+async function checkStatus(response){
+  if (!response.ok){
+    let message = "";
+    try{
+        message = await response.json();
+    } catch( err ){
+    }
+    throw new StatusError(response.status, response.statusText, message);
+  }
+
+  return await response.json();
+}
+
+export { authorizeUrl, oauth2Client, generateToken, getFotos};
